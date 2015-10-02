@@ -1,6 +1,6 @@
 require_relative 'tile'
 
-class board
+class Board
   attr_reader :board
 
   def initialize
@@ -8,7 +8,13 @@ class board
   end
 
   def populate
-    board.each_index
-  end
+    tiles = []
+    board.each_index do |i|
+      board[i].each_index do |j|
+        tiles << [i, j]
 
+      end
+    end
+    tiles.shuffle!
+  end
 end

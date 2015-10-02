@@ -30,22 +30,46 @@ class Game
     nil
   end
 
+  def game_lost
+    puts "Game over!"
+  end
+
+  def game_won?
+    @board.board.flatten.select{|x| !x.revealed}.all?(&:has_bomb?)
+  end
+
   def move_valid?(pos)
 
       return true if pos.count == 2 && pos.all?{ |x| (0..8).cover?(x) } &&
       !pos_to_tile(pos).revealed?
 
+      puts "That is an invalid move."
       return false
 
   end
 
   def run
-    valid = false
-    until valid
-      puts "Please enter your coordinates. ex. 4,2"
-      move = gets.chomp
-      pos = string.split(',').map(&:to_i)
-      move_valid?(pos)
+
+    while true
+
+        valid = false
+        until move.valid?(pos)
+          puts "Please enter your coordinates. ex. 4,2"
+          move = gets.chomp
+          pos = string.split(',').map(&:to_i)
+          valid = move_valid?(pos)
+        end
+        if pos_to_tile(pos).has_bomb
+          self.game_lost
+          break
+        end
+
+        if game_won?
+          p "You won!"
+          break
+        end
+
+
     end
   end
 

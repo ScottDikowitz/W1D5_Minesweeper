@@ -1,7 +1,7 @@
 class Tile
   NEIGHBORS = [[0,1], [1, 1], [1, 0], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
   attr_reader :has_bomb
-  attr_accessor :flag :revealed, :pos
+  attr_accessor :flag, :revealed, :pos
 
   def initialize(has_bomb, board, pos)
     @has_bomb = has_bomb

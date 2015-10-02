@@ -39,7 +39,14 @@ class Game
   end
 
   def game_won?
-    @board.board.flatten.select{|x| !x.revealed}.all?(&:has_bomb)
+    var = @board.board.flatten.select{|x| !x.revealed}.all?(&:has_bomb)
+    if var == true
+      p "You won!"
+      system('clear')
+      display
+      return true
+    end
+    false
   end
 
   def move_valid?(pos)
@@ -52,29 +59,32 @@ class Game
 
   end
 
+  def get_input
+    valid = false
+
+    until valid
+      puts "Please enter your coordinates. ex. 4,2"
+      move = gets.chomp
+      pos = move.split(',').map(&:to_i).reverse!
+      valid = move_valid?(pos)
+    end
+
+    pos
+  end
+
   def run
 
-    while true
+    until game_won?
       system('clear')
       display
-        valid = false
-      until valid
-        puts "Please enter your coordinates. ex. 4,2"
-        move = gets.chomp
-        pos = move.split(',').map(&:to_i).reverse!
-        valid = move_valid?(pos)
-        sleep(2)
-      end
+      pos = get_input
+
       if pos_to_tile(pos).has_bomb
         self.game_lost
-        break
-      elsif game_won?
-        p "You won!"
         break
       else
         reveal(pos_to_tile(pos))
       end
     end
   end
-
 end

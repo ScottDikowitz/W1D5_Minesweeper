@@ -1,5 +1,14 @@
 class Tile
-  NEIGHBORS = [[0,1], [1, 1], [1, 0], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+  NEIGHBORS = [
+    [ 0 ,  1],
+    [ 1 ,  1],
+    [ 1 ,  0],
+    [ 0 , -1],
+    [-1 , -1],
+    [-1 ,  0],
+    [-1 ,  1]
+  ]
+
   attr_reader :has_bomb
   attr_accessor :flag, :revealed, :pos
 
@@ -16,11 +25,15 @@ class Tile
     NEIGHBORS.each do |neighbor|
       position = [neighbor.first + pos.first, neighbor.last + pos.last]
       if position.all? {|x| x.between?(0,8) }
-          store << position
+          store << @board[position]
       end
     end
 
     store
+  end
+
+  def neighbors=
+
   end
 
   def reveal
@@ -31,6 +44,13 @@ class Tile
     self.flag = (self.flag ? false : true)
   end
 
+  def inspect
+    "_" if @revealed
+
+    "f" if @flag
+    "_" if @revealed
+    "*" if !@revealed
+  end
 
 
 end

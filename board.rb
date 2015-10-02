@@ -1,10 +1,13 @@
 require_relative 'tile'
 
 class Board
+  BOARD_SIZE = 9
+  NUM_BOMBS = 10
   attr_reader :board
 
-  def initialize
-    @board = Array.new(9) { Array.new(9) }
+  def initialize()
+    # board_size =
+    @board = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
 
     populate
   end
@@ -20,10 +23,10 @@ class Board
     tiles.shuffle!
     idx = 0
     until tiles.empty?
-      if idx < 10
-        self[tiles.last] = Tile.new(true, board, tiles.pop)
+      if idx < NUM_BOMBS
+        self[tiles.last] = Tile.new(true, self, tiles.pop)
       else
-        self[tiles.last] = Tile.new(false, board, tiles.pop)
+        self[tiles.last] = Tile.new(false, self, tiles.pop)
       end
       idx += 1
     end
@@ -32,6 +35,14 @@ class Board
   def []=(pos, tile)
     x, y = pos
     @board[x][y] = tile
+  end
+  def [](pos)
+    x, y = pos
+    @board[x][y]
+  end
+
+  def inspect
+    "Board populated!"
   end
 
 

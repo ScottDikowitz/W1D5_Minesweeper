@@ -11,6 +11,7 @@ class Board
 
     populate
     #byebug
+    p @board
   end
 
   def populate

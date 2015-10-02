@@ -60,6 +60,8 @@ class Tile
       else
         neighbors_with_bombs.count.to_s
       end
+    elsif @has_bomb
+      'b'
     elsif @flag
       'f'
     else

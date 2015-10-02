@@ -21,10 +21,14 @@ class Game
   end
 
   def reveal(tile)
-    tile.reveal unless tile.has_bomb
+    unless tile.has_bomb
 
-    tile.neighbors.each do |neighbor|
-      reveal(neighbor) unless neighbor.reveal
+      tile.reveal
+        unless tile.neighbors_with_bombs.count > 0
+          tile.neighbors.each do |neighbor|
+            reveal(neighbor) unless neighbor.revealed
+          end
+        end
     end
 
     nil
@@ -40,8 +44,8 @@ class Game
 
   def move_valid?(pos)
 
-      return true if pos.count == 2 && pos.all?{ |x| (0..8).cover?(x) } &&
-      !pos_to_tile(pos).revealed
+      return true if (pos.count == 2) && (pos.all?{ |x| (0..8).cover?(x) }) &&
+      (!pos_to_tile(pos).revealed)
 
       puts "That is an invalid move."
       return false
@@ -51,6 +55,7 @@ class Game
   def run
 
     while true
+      system('clear')
       display
         valid = false
       until valid
@@ -58,6 +63,7 @@ class Game
         move = gets.chomp
         pos = move.split(',').map(&:to_i).reverse!
         valid = move_valid?(pos)
+        sleep(2)
       end
       if pos_to_tile(pos).has_bomb
         self.game_lost

@@ -21,7 +21,7 @@ class Game
   end
 
   def reveal(tile)
-    unless tile.has_bomb
+    unless tile.has_bomb || tile.flag
 
       tile.reveal
         unless tile.neighbors_with_bombs.count > 0
@@ -49,10 +49,11 @@ class Game
     false
   end
 
-  def move_valid?(pos)
+  def move_valid?(pos, command)
 
       return true if (pos.count == 2) && (pos.all?{ |x| (0..8).cover?(x) }) &&
-      (!pos_to_tile(pos).revealed)
+      (!pos_to_tile(pos).revealed) && (command == 'r' || command == 'f') ||
+      (!(pos_to_tile(pos) && command == 'r'))
 
       puts "That is an invalid move."
       return false
@@ -63,13 +64,14 @@ class Game
     valid = false
 
     until valid
-      puts "Please enter your coordinates. ex. 4,2"
+      puts "Please enter your command[r,f] and then coordinates. ex. 'r 4,2'"
       move = gets.chomp
-      pos = move.split(',').map(&:to_i).reverse!
-      valid = move_valid?(pos)
+      command = move[0].downcase
+      pos = move[2..-1].split(',').map(&:to_i).reverse!
+      valid = move_valid?(pos, command)
     end
 
-    pos
+    { command => pos }
   end
 
   def run
@@ -77,13 +79,21 @@ class Game
     until game_won?
       system('clear')
       display
-      pos = get_input
+      input = get_input
+      command = input.keys.first
+      pos = input.values.first
 
-      if pos_to_tile(pos).has_bomb
-        self.game_lost
-        break
-      else
-        reveal(pos_to_tile(pos))
+        if command == 'f'
+          pos_to_tile(pos).change_flag
+
+        else
+        if pos_to_tile(pos).has_bomb
+          self.game_lost
+          break
+
+        else
+          reveal(pos_to_tile(pos))
+        end
       end
     end
   end

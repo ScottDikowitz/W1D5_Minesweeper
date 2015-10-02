@@ -10,8 +10,8 @@ class Tile
     [-1 ,  1]
   ]
 
-  attr_reader :has_bomb
-  attr_accessor :flag, :revealed, :pos
+  attr_reader :has_bomb, :flag
+  attr_accessor :revealed, :pos
 
   def initialize(has_bomb, board, pos)
     @has_bomb = has_bomb
@@ -20,6 +20,10 @@ class Tile
     @board = board
     @pos = pos
   end
+
+  # def has_bomb?
+  #   @has_bomb
+  # end
 
   def neighbors
     store = []
@@ -32,10 +36,6 @@ class Tile
     end
 
     store
-  end
-
-  def neighbors=
-
   end
 
   def reveal

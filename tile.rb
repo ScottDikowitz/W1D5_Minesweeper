@@ -40,17 +40,29 @@ class Tile
     self.revealed = true
   end
 
+  def neighbors_with_bombs
+    self.neighbors.select do |neighbor|
+      neighbor.has_bomb
+    end
+
+  end
+
   def change_flag
     self.flag = (self.flag ? false : true)
   end
 
-  def inspect
-    "_" if @revealed
-
-    "f" if @flag
-    "_" if @revealed
-    "*" if !@revealed
+  def to_s
+    if @revealed
+      if neighbors_with_bombs.count == 0
+        "_"
+      else
+        neighbors_with_bombs.count.to_s
+      end
+    elsif @flag
+      'f'
+    else
+      '*'
+    end
   end
-
 
 end

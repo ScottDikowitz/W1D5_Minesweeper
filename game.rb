@@ -8,8 +8,10 @@ class Game
   end
 
   def display
-    @board.board.map do |row|
-      row.join(|)
+    puts "  #{(0..8).to_a.join('   ')}"
+    @board.board.map.with_index do |row, index|
+      puts "#{index} #{row.join(' | ')}"
+      puts " " + ("-" * 35)
     end
 
   end

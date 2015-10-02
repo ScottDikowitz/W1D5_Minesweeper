@@ -1,5 +1,5 @@
 require_relative 'tile'
-
+#require 'byebug'
 class Board
   BOARD_SIZE = 9
   NUM_BOMBS = 10
@@ -10,6 +10,7 @@ class Board
     @board = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
 
     populate
+    #byebug
   end
 
   def populate
@@ -45,7 +46,10 @@ class Board
     "Board populated!"
   end
 
+end
 
-
-
+if __FILE__ == $PROGRAM_NAME
+  a = Board.new
+  p a.board[0][0].neighbors_with_bombs
+  p board
 end

@@ -1,3 +1,4 @@
+#require 'byebug'
 class Tile
   NEIGHBORS = [
     [ 0 ,  1],
@@ -22,6 +23,7 @@ class Tile
 
   def neighbors
     store = []
+#    byebug
     NEIGHBORS.each do |neighbor|
       position = [neighbor.first + pos.first, neighbor.last + pos.last]
       if position.all? {|x| x.between?(0,8) }

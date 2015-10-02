@@ -9,7 +9,7 @@ class Game
 
   def display
     puts "  #{(0..8).to_a.join('   ')}"
-    @board.board.map.with_index do |row, index|
+    @board.board.each.with_index do |row, index|
       puts "#{index} #{row.join(' | ')}"
       puts " " + ("-" * 35)
     end
@@ -35,13 +35,13 @@ class Game
   end
 
   def game_won?
-    @board.board.flatten.select{|x| !x.revealed}.all?(&:has_bomb?)
+    @board.board.flatten.select{|x| !x.revealed}.all?(&:has_bomb)
   end
 
   def move_valid?(pos)
 
       return true if pos.count == 2 && pos.all?{ |x| (0..8).cover?(x) } &&
-      !pos_to_tile(pos).revealed?
+      !pos_to_tile(pos).revealed
 
       puts "That is an invalid move."
       return false
@@ -51,25 +51,23 @@ class Game
   def run
 
     while true
-
+      display
         valid = false
-        until move.valid?(pos)
-          puts "Please enter your coordinates. ex. 4,2"
-          move = gets.chomp
-          pos = string.split(',').map(&:to_i)
-          valid = move_valid?(pos)
-        end
-        if pos_to_tile(pos).has_bomb
-          self.game_lost
-          break
-        end
-
-        if game_won?
-          p "You won!"
-          break
-        end
-
-
+      until valid
+        puts "Please enter your coordinates. ex. 4,2"
+        move = gets.chomp
+        pos = move.split(',').map(&:to_i).reverse!
+        valid = move_valid?(pos)
+      end
+      if pos_to_tile(pos).has_bomb
+        self.game_lost
+        break
+      elsif game_won?
+        p "You won!"
+        break
+      else
+        reveal(pos_to_tile(pos))
+      end
     end
   end
 

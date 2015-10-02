@@ -5,7 +5,7 @@ class Board
   NUM_BOMBS = 10
   attr_reader :board
 
-  def initialize()
+  def initialize(board_size = 9)
     # board_size =
     @board = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
 
@@ -42,6 +42,10 @@ class Board
     x, y = pos
     @board[x][y]
   end
+  #
+  # def has_bomb?(pos)
+  #
+  # end
 
   def inspect
     "Board populated!"

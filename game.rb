@@ -1,5 +1,6 @@
 require_relative 'board'
 require_relative 'tile'
+require 'yaml'
 
 class Game
 
@@ -14,6 +15,11 @@ class Game
       puts " " + ("-" * 35)
     end
     nil
+  end
+
+  def save
+    # save = @board.to_yaml
+    # IO.write("saved_game.txt", save)
   end
 
   def pos_to_tile(pos)
@@ -67,6 +73,10 @@ class Game
       puts "Please enter your command[r,f] and then coordinates. ex. 'r 4,2'"
       move = gets.chomp
       command = move[0].downcase
+      # if command == "s"
+      #   self.save
+      #   break
+      # end
       pos = move[2..-1].split(',').map(&:to_i).reverse!
       valid = move_valid?(pos, command)
     end
